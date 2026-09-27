@@ -173,11 +173,3 @@ export function getGoogleMapsNavigationUrl(
 ): string {
   return `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}&destination_place_id=${encodeURIComponent(label)}`;
 }
-
-export function getAppleMapsNavigationUrl(
-  lat: number,
-  lng: number,
-  label: string
-): string {
-  return `maps://?daddr=${lat},${lng}&q=${encodeURIComponent(label)}`;
-}
