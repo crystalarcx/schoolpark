@@ -1,0 +1,24 @@
+{
+  "name": "台南週末校園停車即時定位",
+  "short_name": "校園停車",
+  "description": "即時手機GPS定位計算台南市週末假日開放校園臨時停車場距離，自動推薦最近停車點並支援一鍵導航。",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#1e1b4b",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
