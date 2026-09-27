@@ -1,0 +1,6 @@
+{
+  "name": "台南週末校園停車即時定位",
+  "description": "即時手機GPS定位計算台南市週末假日開放校園臨時停車場距離，自動推薦最近停車點並支援一鍵導航。",
+  "requestFramePermissions": ["geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
