@@ -37,9 +37,9 @@ export const MapView: React.FC<MapViewProps> = ({
         zoomControl: false,
       });
 
-      // CartoDB Voyager tiles (clean, readable for urban navigation)
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a>, &copy; CARTO',
+      // OpenStreetMap tiles (100% free, open, no API key required, with Taiwan road names)
+      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap</a> 貢獻者',
         maxZoom: 19,
       }).addTo(map);
 
