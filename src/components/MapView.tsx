@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import L from 'leaflet';
 import { SchoolWithDistance, UserLocation } from '../types';
-import { getGoogleMapsNavigationUrl } from '../utils/geo';
+import { getGoogleMapsNavigationUrl, getAppleMapsNavigationUrl } from '../utils/geo';
 import { Navigation, MapPin, X, ExternalLink, Crosshair, ZoomIn } from 'lucide-react';
 
 interface MapViewProps {
@@ -307,16 +307,36 @@ export const MapView: React.FC<MapViewProps> = ({
               )}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex-1 flex items-center justify-center gap-1.5 h-10 px-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold shadow-sm active:scale-95 transition-transform"
+              onClick={() => {
+                if ('vibrate' in navigator) navigator.vibrate(10);
+              }}
+              className="flex-1 flex items-center justify-center gap-1.5 h-10 px-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold shadow-xs active:scale-95 transition-all"
             >
               <Navigation className="w-3.5 h-3.5" />
-              <span>Google 導航前往</span>
+              <span>Google 導航</span>
+            </a>
+
+            <a
+              href={getAppleMapsNavigationUrl(
+                activeSchool.lat,
+                activeSchool.lng,
+                `${activeSchool.name} (校園停車)`
+              )}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => {
+                if ('vibrate' in navigator) navigator.vibrate(10);
+              }}
+              className="flex items-center justify-center gap-1 h-10 px-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold shadow-xs active:scale-95 transition-all"
+            >
+              <ExternalLink className="w-3.5 h-3.5 text-slate-300" />
+              <span>Apple 地圖</span>
             </a>
 
             {selectedSchool && (
               <button
                 onClick={() => onSelectSchool(null)}
-                className="h-10 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-medium"
+                className="h-10 px-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-medium"
               >
                 關閉
               </button>

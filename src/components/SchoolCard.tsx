@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { SchoolWithDistance, UserLocation } from '../types';
-import { getGoogleMapsNavigationUrl, getCompassDirection } from '../utils/geo';
-import { Navigation, MapPin, Check, Copy, Car, Footprints, Clock, ChevronRight } from 'lucide-react';
+import { getGoogleMapsNavigationUrl, getAppleMapsNavigationUrl, getCompassDirection } from '../utils/geo';
+import { Navigation, MapPin, Check, Copy, Car, Footprints, Clock, ChevronRight, ExternalLink } from 'lucide-react';
 
 interface SchoolCardProps {
   school: SchoolWithDistance;
@@ -29,12 +29,19 @@ export const SchoolCard: React.FC<SchoolCardProps> = ({
 
   const handleCopy = (e: React.MouseEvent) => {
     e.stopPropagation();
+    if ('vibrate' in navigator) navigator.vibrate(10);
     navigator.clipboard.writeText(school.address);
     setCopied(true);
     setTimeout(() => setCopied(false), 1800);
   };
 
   const googleMapsUrl = getGoogleMapsNavigationUrl(
+    school.lat,
+    school.lng,
+    `${school.name} (校園停車)`
+  );
+
+  const appleMapsUrl = getAppleMapsNavigationUrl(
     school.lat,
     school.lng,
     `${school.name} (校園停車)`
@@ -150,21 +157,40 @@ export const SchoolCard: React.FC<SchoolCardProps> = ({
           </div>
         )}
 
-        {/* Bottom Actions */}
-        <div className="flex items-center gap-2 pt-2 border-t border-slate-100">
+        {/* Bottom Actions: iPhone Thumb Zone Optimized */}
+        <div className="grid grid-cols-3 gap-2 pt-2 border-t border-slate-100">
           <a
             href={googleMapsUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex-1 flex items-center justify-center gap-1.5 h-11 px-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold shadow-sm active:scale-[0.98] transition-all"
+            onClick={() => {
+              if ('vibrate' in navigator) navigator.vibrate(10);
+            }}
+            className="flex items-center justify-center gap-1 h-11 px-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold shadow-xs active:scale-[0.97] transition-all"
           >
             <Navigation className="w-3.5 h-3.5" />
-            <span>Google 導航</span>
+            <span className="truncate">Google</span>
+          </a>
+
+          <a
+            href={appleMapsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => {
+              if ('vibrate' in navigator) navigator.vibrate(10);
+            }}
+            className="flex items-center justify-center gap-1 h-11 px-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold shadow-xs active:scale-[0.97] transition-all"
+          >
+            <ExternalLink className="w-3.5 h-3.5 text-slate-300" />
+            <span className="truncate">Apple 地圖</span>
           </a>
 
           <button
-            onClick={() => onViewOnMap(school)}
-            className="flex items-center justify-center gap-1 h-11 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-medium active:scale-[0.98] transition-all"
+            onClick={() => {
+              if ('vibrate' in navigator) navigator.vibrate(10);
+              onViewOnMap(school);
+            }}
+            className="flex items-center justify-center gap-1 h-11 px-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-medium active:scale-[0.97] transition-all"
           >
             <MapPin className="w-3.5 h-3.5 text-indigo-600" />
             <span>地圖</span>

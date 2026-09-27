@@ -13,14 +13,14 @@ export const Navbar: React.FC<NavbarProps> = ({
   isLocating,
 }) => {
   return (
-    <header className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-200/80">
-      <div className="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between">
+    <header className="sticky top-0 z-40 bg-white/85 backdrop-blur-xl border-b border-slate-200/70 pt-safe transition-all">
+      <div className="max-w-5xl mx-auto px-4 h-13 flex items-center justify-between">
         {/* Zone 1: Single text element wordmark */}
-        <a href="/" className="flex items-center gap-2 text-base sm:text-lg font-bold tracking-tight text-slate-900">
-          <div className="w-8 h-8 rounded-xl bg-indigo-600 text-white flex items-center justify-center shadow-sm shadow-indigo-600/20">
+        <a href="/" className="flex items-center gap-2 text-[15px] sm:text-base font-bold tracking-tight text-slate-900 active:opacity-75 transition-opacity">
+          <div className="w-8 h-8 rounded-xl bg-indigo-600 text-white flex items-center justify-center shadow-sm shadow-indigo-600/30">
             <Car className="w-4 h-4" />
           </div>
-          <span>台南週末校園停車</span>
+          <span className="font-bold">台南校園停車</span>
         </a>
 
         {/* Zone 2: Info hint */}

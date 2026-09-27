@@ -6,7 +6,7 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { TAINAN_SCHOOLS, TAINAN_LOCATION_PRESETS } from './data/schools';
 import { District, FeeType, SchoolWithDistance, UserLocation } from './types';
-import { sortSchoolsByDistance, getGoogleMapsNavigationUrl } from './utils/geo';
+import { sortSchoolsByDistance, getGoogleMapsNavigationUrl, getAppleMapsNavigationUrl } from './utils/geo';
 import { Navbar } from './components/Navbar';
 import { NearestHeroCard } from './components/NearestHeroCard';
 import { SchoolCard } from './components/SchoolCard';
@@ -205,7 +205,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col font-sans pb-24 sm:pb-12 text-slate-900">
+    <div className="min-h-screen bg-slate-50 flex flex-col font-sans pb-safe-nav sm:pb-12 text-slate-900 selection:bg-indigo-100">
       {/* Top Bar Contract (1 row, 3 zones) */}
       <Navbar
         onOpenTips={() => setShowTipsModal(true)}
@@ -329,33 +329,56 @@ export default function App() {
         </div>
       </main>
 
-      {/* Sticky Bottom Thumb Zone Navigation Bar (Mobile only) */}
+      {/* Sticky Bottom Thumb Zone Navigation Bar (iPhone Optimized) */}
       {nearestSchool && (
-        <div className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200 px-4 py-2.5 shadow-lg">
-          <div className="flex items-center justify-between gap-3">
-            <div className="min-w-0">
-              <div className="text-[11px] text-slate-500 flex items-center gap-1">
-                <Sparkles className="w-3 h-3 text-amber-500" />
-                <span>最近：{nearestSchool.name}</span>
+        <div className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/90 backdrop-blur-2xl border-t border-slate-200/80 px-4 pt-2 pb-[max(env(safe-area-inset-bottom),10px)] shadow-2xl transition-all">
+          <div className="flex items-center justify-between gap-2.5">
+            <div className="min-w-0 flex-1">
+              <div className="text-[11px] text-slate-500 flex items-center gap-1 font-medium">
+                <Sparkles className="w-3 h-3 text-amber-500 shrink-0" />
+                <span className="truncate">最近：{nearestSchool.name}</span>
               </div>
-              <div className="text-sm font-bold text-slate-900 tabular-nums">
-                距離 {nearestSchool.distanceFormatted} · 車程約 {nearestSchool.driveTimeMin} 分
+              <div className="text-[13px] font-bold text-slate-900 tabular-nums">
+                <span className="text-indigo-600">{nearestSchool.distanceFormatted}</span>
+                <span className="text-slate-400 font-normal mx-1">·</span>
+                <span>車程約 {nearestSchool.driveTimeMin} 分</span>
               </div>
             </div>
 
-            <a
-              href={getGoogleMapsNavigationUrl(
-                nearestSchool.lat,
-                nearestSchool.lng,
-                `${nearestSchool.name} (校園停車)`
-              )}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center gap-1.5 h-11 px-4 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-xs shadow-md shadow-amber-400/20 active:scale-95 transition-transform shrink-0"
-            >
-              <Navigation className="w-4 h-4" />
-              <span>一鍵導航</span>
-            </a>
+            <div className="flex items-center gap-1.5 shrink-0">
+              <a
+                href={getGoogleMapsNavigationUrl(
+                  nearestSchool.lat,
+                  nearestSchool.lng,
+                  `${nearestSchool.name} (校園停車)`
+                )}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => {
+                  if ('vibrate' in navigator) navigator.vibrate(15);
+                }}
+                className="flex items-center justify-center gap-1 h-10 px-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-xs shadow-xs active:scale-95 transition-all"
+              >
+                <Navigation className="w-3.5 h-3.5 fill-slate-950" />
+                <span>Google</span>
+              </a>
+
+              <a
+                href={getAppleMapsNavigationUrl(
+                  nearestSchool.lat,
+                  nearestSchool.lng,
+                  `${nearestSchool.name} (校園停車)`
+                )}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => {
+                  if ('vibrate' in navigator) navigator.vibrate(15);
+                }}
+                className="flex items-center justify-center gap-1 h-10 px-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs shadow-xs active:scale-95 transition-all"
+              >
+                <span>Apple</span>
+              </a>
+            </div>
           </div>
         </div>
       )}
