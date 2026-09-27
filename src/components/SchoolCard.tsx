@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { SchoolWithDistance, UserLocation } from '../types';
-import { getGoogleMapsNavigationUrl, getAppleMapsNavigationUrl, getCompassDirection } from '../utils/geo';
-import { Navigation, MapPin, Check, Copy, Car, Footprints, Clock, ChevronRight, ExternalLink } from 'lucide-react';
+import { getGoogleMapsNavigationUrl, getCompassDirection } from '../utils/geo';
+import { Navigation, MapPin, Check, Copy, Car, Footprints, Clock, ChevronRight } from 'lucide-react';
 
 interface SchoolCardProps {
   school: SchoolWithDistance;
@@ -36,12 +36,6 @@ export const SchoolCard: React.FC<SchoolCardProps> = ({
   };
 
   const googleMapsUrl = getGoogleMapsNavigationUrl(
-    school.lat,
-    school.lng,
-    `${school.name} (校園停車)`
-  );
-
-  const appleMapsUrl = getAppleMapsNavigationUrl(
     school.lat,
     school.lng,
     `${school.name} (校園停車)`
@@ -158,7 +152,7 @@ export const SchoolCard: React.FC<SchoolCardProps> = ({
         )}
 
         {/* Bottom Actions: iPhone Thumb Zone Optimized */}
-        <div className="grid grid-cols-3 gap-2 pt-2 border-t border-slate-100">
+        <div className="flex items-center gap-2 pt-2 border-t border-slate-100">
           <a
             href={googleMapsUrl}
             target="_blank"
@@ -166,23 +160,10 @@ export const SchoolCard: React.FC<SchoolCardProps> = ({
             onClick={() => {
               if ('vibrate' in navigator) navigator.vibrate(10);
             }}
-            className="flex items-center justify-center gap-1 h-11 px-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold shadow-xs active:scale-[0.97] transition-all"
+            className="flex-1 flex items-center justify-center gap-1.5 h-11 px-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold shadow-xs active:scale-[0.97] transition-all"
           >
-            <Navigation className="w-3.5 h-3.5" />
-            <span className="truncate">Google</span>
-          </a>
-
-          <a
-            href={appleMapsUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={() => {
-              if ('vibrate' in navigator) navigator.vibrate(10);
-            }}
-            className="flex items-center justify-center gap-1 h-11 px-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold shadow-xs active:scale-[0.97] transition-all"
-          >
-            <ExternalLink className="w-3.5 h-3.5 text-slate-300" />
-            <span className="truncate">Apple 地圖</span>
+            <Navigation className="w-4 h-4" />
+            <span>Google 地圖導航</span>
           </a>
 
           <button
@@ -190,7 +171,7 @@ export const SchoolCard: React.FC<SchoolCardProps> = ({
               if ('vibrate' in navigator) navigator.vibrate(10);
               onViewOnMap(school);
             }}
-            className="flex items-center justify-center gap-1 h-11 px-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-medium active:scale-[0.97] transition-all"
+            className="flex items-center justify-center gap-1 h-11 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-medium active:scale-[0.97] transition-all shrink-0"
           >
             <MapPin className="w-3.5 h-3.5 text-indigo-600" />
             <span>地圖</span>

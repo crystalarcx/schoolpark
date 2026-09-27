@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { SchoolWithDistance, UserLocation } from '../types';
-import { getGoogleMapsNavigationUrl, getAppleMapsNavigationUrl, getCompassDirection } from '../utils/geo';
-import { Navigation, Car, Footprints, Clock, MapPin, Check, Copy, ExternalLink, Sparkles } from 'lucide-react';
+import { getGoogleMapsNavigationUrl, getCompassDirection } from '../utils/geo';
+import { Navigation, Car, Footprints, Clock, MapPin, Check, Copy, Sparkles } from 'lucide-react';
 
 interface NearestHeroCardProps {
   school: SchoolWithDistance;
@@ -31,12 +31,6 @@ export const NearestHeroCard: React.FC<NearestHeroCardProps> = ({
   };
 
   const googleMapsUrl = getGoogleMapsNavigationUrl(
-    school.lat,
-    school.lng,
-    `${school.name} (校園停車)`
-  );
-
-  const appleMapsUrl = getAppleMapsNavigationUrl(
     school.lat,
     school.lng,
     `${school.name} (校園停車)`
@@ -146,7 +140,7 @@ export const NearestHeroCard: React.FC<NearestHeroCardProps> = ({
         </div>
 
         {/* Actions Buttons: iPhone Thumb zone optimized */}
-        <div className="space-y-2.5 pt-1">
+        <div className="flex flex-col sm:flex-row gap-2.5 pt-1">
           {/* Primary Action: Google Maps Navigation */}
           <a
             href={googleMapsUrl}
@@ -155,38 +149,22 @@ export const NearestHeroCard: React.FC<NearestHeroCardProps> = ({
             onClick={() => {
               if ('vibrate' in navigator) navigator.vibrate(15);
             }}
-            className="flex items-center justify-center gap-2 w-full h-[50px] px-4 rounded-2xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-sm shadow-lg shadow-amber-400/25 active:scale-[0.98] transition-all"
+            className="flex-1 flex items-center justify-center gap-2 h-[50px] px-5 rounded-2xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-sm shadow-lg shadow-amber-400/25 active:scale-[0.98] transition-all"
           >
             <Navigation className="w-4 h-4 fill-slate-950" />
             <span>Google 地圖路線導航</span>
           </a>
 
-          {/* Secondary Actions Row for iPhone */}
-          <div className="grid grid-cols-2 gap-2">
-            <a
-              href={appleMapsUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => {
-                if ('vibrate' in navigator) navigator.vibrate(15);
-              }}
-              className="flex items-center justify-center gap-2 h-11 px-3 rounded-xl bg-white/15 hover:bg-white/20 text-white font-semibold text-xs border border-white/20 active:scale-[0.98] transition-all backdrop-blur-md"
-            >
-              <ExternalLink className="w-3.5 h-3.5 text-blue-300" />
-              <span>Apple 地圖導航</span>
-            </a>
-
-            <button
-              onClick={() => {
-                if ('vibrate' in navigator) navigator.vibrate(10);
-                onViewOnMap(school);
-              }}
-              className="flex items-center justify-center gap-2 h-11 px-3 rounded-xl bg-white/10 hover:bg-white/15 text-white font-medium text-xs border border-white/15 active:scale-[0.98] transition-all"
-            >
-              <MapPin className="w-3.5 h-3.5 text-indigo-300" />
-              <span>在地圖上查看</span>
-            </button>
-          </div>
+          <button
+            onClick={() => {
+              if ('vibrate' in navigator) navigator.vibrate(10);
+              onViewOnMap(school);
+            }}
+            className="flex items-center justify-center gap-2 h-[50px] px-5 rounded-2xl bg-white/15 hover:bg-white/20 text-white font-medium text-xs border border-white/20 active:scale-[0.98] transition-all backdrop-blur-md shrink-0"
+          >
+            <MapPin className="w-4 h-4 text-indigo-300" />
+            <span>在地圖上查看</span>
+          </button>
         </div>
       </div>
     </div>

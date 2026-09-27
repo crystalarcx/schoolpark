@@ -6,7 +6,7 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { TAINAN_SCHOOLS, TAINAN_LOCATION_PRESETS } from './data/schools';
 import { District, FeeType, SchoolWithDistance, UserLocation } from './types';
-import { sortSchoolsByDistance, getGoogleMapsNavigationUrl, getAppleMapsNavigationUrl } from './utils/geo';
+import { sortSchoolsByDistance, getGoogleMapsNavigationUrl } from './utils/geo';
 import { Navbar } from './components/Navbar';
 import { NearestHeroCard } from './components/NearestHeroCard';
 import { SchoolCard } from './components/SchoolCard';
@@ -345,7 +345,7 @@ export default function App() {
               </div>
             </div>
 
-            <div className="flex items-center gap-1.5 shrink-0">
+            <div className="shrink-0">
               <a
                 href={getGoogleMapsNavigationUrl(
                   nearestSchool.lat,
@@ -357,26 +357,10 @@ export default function App() {
                 onClick={() => {
                   if ('vibrate' in navigator) navigator.vibrate(15);
                 }}
-                className="flex items-center justify-center gap-1 h-10 px-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-xs shadow-xs active:scale-95 transition-all"
+                className="flex items-center justify-center gap-1.5 h-11 px-4 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-xs shadow-md shadow-amber-400/20 active:scale-95 transition-all"
               >
-                <Navigation className="w-3.5 h-3.5 fill-slate-950" />
-                <span>Google</span>
-              </a>
-
-              <a
-                href={getAppleMapsNavigationUrl(
-                  nearestSchool.lat,
-                  nearestSchool.lng,
-                  `${nearestSchool.name} (校園停車)`
-                )}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => {
-                  if ('vibrate' in navigator) navigator.vibrate(15);
-                }}
-                className="flex items-center justify-center gap-1 h-10 px-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs shadow-xs active:scale-95 transition-all"
-              >
-                <span>Apple</span>
+                <Navigation className="w-4 h-4 fill-slate-950" />
+                <span>Google 導航</span>
               </a>
             </div>
           </div>

@@ -105,11 +105,14 @@ export const LocationBanner: React.FC<LocationBannerProps> = ({
             </button>
           )}
 
-          {/* Preset Selector Dropdown */}
+          {/* Preset Selector */}
           <div className="relative">
             <button
-              onClick={() => setShowPresetDropdown(!showPresetDropdown)}
-              className="flex items-center gap-1 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-medium border border-slate-200 transition-colors"
+              onClick={() => {
+                if ('vibrate' in navigator) navigator.vibrate(10);
+                setShowPresetDropdown(!showPresetDropdown);
+              }}
+              className="flex items-center gap-1 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold border border-slate-200 active:scale-95 transition-all"
             >
               <span>切換位置</span>
               <ChevronDown className="w-3.5 h-3.5 text-slate-500" />
@@ -117,15 +120,74 @@ export const LocationBanner: React.FC<LocationBannerProps> = ({
 
             {showPresetDropdown && (
               <>
+                {/* Backdrop */}
                 <div
-                  className="fixed inset-0 z-30"
+                  className="fixed inset-0 z-50 bg-slate-950/40 backdrop-blur-xs transition-opacity"
                   onClick={() => setShowPresetDropdown(false)}
                 />
-                <div className="absolute right-0 top-full mt-2 w-64 rounded-xl bg-white shadow-xl border border-slate-200 py-1.5 z-40 animate-in fade-in zoom-in-95 duration-150">
-                  <div className="px-3 py-1.5 text-[11px] font-semibold text-slate-400 border-b border-slate-100">
-                    測試快速選取台南出發地
+
+                {/* Mobile Bottom Sheet (iPhone friendly, no text clipping) */}
+                <div className="fixed inset-x-0 bottom-0 z-50 bg-white rounded-t-3xl shadow-2xl p-4 pb-[max(env(safe-area-inset-bottom),20px)] sm:hidden animate-in slide-in-from-bottom duration-200 border-t border-slate-200">
+                  {/* iOS drag pill */}
+                  <div className="w-10 h-1 bg-slate-300 rounded-full mx-auto mb-3" />
+                  
+                  <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+                    <div>
+                      <h3 className="text-sm font-bold text-slate-900">選擇台南測試出發地</h3>
+                      <p className="text-[11px] text-slate-500">切換後將自動計算由此出發至各校之距離</p>
+                    </div>
+                    <button
+                      onClick={() => setShowPresetDropdown(false)}
+                      className="px-2.5 py-1 text-xs text-slate-500 hover:text-slate-800 bg-slate-100 rounded-lg font-medium"
+                    >
+                      關閉
+                    </button>
                   </div>
-                  <div className="max-h-60 overflow-y-auto py-1">
+
+                  <div className="max-h-[60vh] overflow-y-auto divide-y divide-slate-100 py-1">
+                    {TAINAN_LOCATION_PRESETS.map((preset) => {
+                      const isSelected =
+                        userLocation.isSimulated &&
+                        userLocation.simulatedName === preset.name;
+                      return (
+                        <button
+                          key={preset.name}
+                          onClick={() => {
+                            if ('vibrate' in navigator) navigator.vibrate(10);
+                            onSelectSimulatedLocation(preset);
+                            setShowPresetDropdown(false);
+                          }}
+                          className={`w-full text-left px-3 py-3 flex items-center justify-between rounded-xl transition-colors ${
+                            isSelected
+                              ? 'bg-indigo-50 text-indigo-900 font-bold'
+                              : 'text-slate-800 active:bg-slate-100'
+                          }`}
+                        >
+                          <div className="min-w-0 pr-2">
+                            <div className="text-sm font-medium text-slate-900">{preset.name}</div>
+                            <div className="text-xs text-slate-500 mt-0.5">{preset.district}</div>
+                          </div>
+                          {isSelected ? (
+                            <span className="inline-flex items-center gap-1 text-xs text-indigo-600 font-semibold bg-indigo-100/70 px-2 py-0.5 rounded-full shrink-0">
+                              <Check className="w-3.5 h-3.5" />
+                              使用中
+                            </span>
+                          ) : (
+                            <span className="text-xs text-slate-400 font-normal shrink-0">選擇</span>
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Desktop Dropdown */}
+                <div className="hidden sm:block absolute right-0 top-full mt-2 w-72 rounded-2xl bg-white shadow-xl border border-slate-200 py-2 z-50 animate-in fade-in zoom-in-95 duration-150">
+                  <div className="px-4 py-2 text-xs font-bold text-slate-700 border-b border-slate-100 flex items-center justify-between">
+                    <span>測試快速選取出發地</span>
+                    <span className="text-[10px] text-slate-400 font-normal">模擬位置</span>
+                  </div>
+                  <div className="max-h-64 overflow-y-auto py-1">
                     {TAINAN_LOCATION_PRESETS.map((preset) => {
                       const isSelected =
                         userLocation.isSimulated &&
@@ -137,17 +199,17 @@ export const LocationBanner: React.FC<LocationBannerProps> = ({
                             onSelectSimulatedLocation(preset);
                             setShowPresetDropdown(false);
                           }}
-                          className={`w-full text-left px-3 py-2 text-xs flex items-center justify-between hover:bg-slate-50 transition-colors ${
-                            isSelected ? 'bg-indigo-50/70 text-indigo-900 font-semibold' : 'text-slate-700'
+                          className={`w-full text-left px-4 py-2.5 text-xs flex items-center justify-between hover:bg-slate-50 transition-colors ${
+                            isSelected ? 'bg-indigo-50/70 text-indigo-900 font-bold' : 'text-slate-700'
                           }`}
                         >
                           <div>
-                            <div>{preset.name}</div>
-                            <div className="text-[10px] text-slate-400 font-normal">
+                            <div className="font-medium text-slate-900">{preset.name}</div>
+                            <div className="text-[11px] text-slate-400 font-normal">
                               {preset.district}
                             </div>
                           </div>
-                          {isSelected && <Check className="w-3.5 h-3.5 text-indigo-600" />}
+                          {isSelected && <Check className="w-4 h-4 text-indigo-600" />}
                         </button>
                       );
                     })}
